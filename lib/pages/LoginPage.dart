@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import '../common/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,6 +15,8 @@ class _loginPage extends State<LoginPage> {
   Timer _timer;
   String _verifyCode = "";
   String _phoneNum = "";
+
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +52,7 @@ class _loginPage extends State<LoginPage> {
     return new ListView(
       children: <Widget>[
         _buildCostomBar(),
+        _bulidLogoImg(),
         _buildPhoneEdit(),
         _buildVerifyCodeEdit(),
         _buildRegist()
@@ -66,58 +69,46 @@ class _loginPage extends State<LoginPage> {
           new InkWell(
             child: new Text(
               "密码登录",
-              style: TextStyle(color: Colors.blue[700], fontSize: 20.0),
+              style: TextStyle(color: Constants.color_blue, fontSize: 20.0),
             ),
             onTap: () {},
           ),
           new InkWell(
             child: new Icon(
               Icons.clear,
-              color: Colors.blue[700],
+              color: Constants.color_blue,
             ),
+            onTap: (){
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
     );
   }
 
-  /* final TextEditingController _textController = new TextEditingController();
-return new Container(
-  height: 35.0,
-margin: const EdgeInsets.all(40.0),
-child: new Material(
-  type: MaterialType.canvas,
-  shape: new StadiumBorder(
-    side: new BorderSide(
-      color: Colors.grey[200],
-      style: BorderStyle.solid
-    )
-  ),
-  child: new TextField(
-    autofocus: true,
-    controller: _textController,
-    decoration: new InputDecoration(
-      contentPadding: new EdgeInsets.all(5.0),
-        hintText: "请输入手机号",
-      border: InputBorder.none
-    ),
-    onChanged: (String content){
-      print(content);
-    }
-  ),
-),
-); */
+  Widget _bulidLogoImg() {
+    return new Center(
+        child: new Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        new Expanded(
+          child: new Image.asset("images/logo_name2.png"),
+          flex: 1,
+        )
+      ],
+    ));
+  }
 
   Widget _buildPhoneEdit() {
     return new Padding(
-      padding: const EdgeInsets.only(
-          left: 50.0, right: 50.0, top: 40.0, bottom: 10.0),
+      padding:   const EdgeInsets.only(left: 50.0, right: 50.0,top:10.0),
       child: new TextField(
-         onChanged: (str) {
-          _phoneNum = str;        
+        onChanged: (str) {
+          _phoneNum = str;
         },
         decoration: new InputDecoration(
-          hintText: "请输入手机号",
+          hintText: "请输入手机号",        
         ),
         keyboardType: TextInputType.phone,
         inputFormatters: <TextInputFormatter>[
@@ -129,8 +120,10 @@ child: new Material(
 
   Widget _buildVerifyCodeEdit() {
     Widget _verifyCodeEdit = new TextField(
-      decoration: const InputDecoration(hintText: "请输入短信验证码"),
-      keyboardType: TextInputType.number,
+      decoration: const InputDecoration(
+        hintText: "请输入短信验证码",        
+      ),
+      keyboardType: TextInputType.number,     
       onChanged: (str) {
         _verifyCode = str;
         setState(() {});
@@ -154,12 +147,12 @@ child: new Material(
         ),
         child: new Text(
           "$_verifyStr",
-          style: TextStyle(color: Colors.black, fontSize: 15.0),
+          style: TextStyle( fontSize: 15.0),
         ),
       ),
     );
     return new Padding(
-        padding: const EdgeInsets.only(left: 50.0, right: 50.0, top: 10.0),
+        padding:    const EdgeInsets.only(left: 50.0, right: 50.0,top: 10.0),
         child: new Stack(
           children: <Widget>[
             _verifyCodeEdit,
@@ -175,14 +168,14 @@ child: new Material(
     return new Padding(
       padding: const EdgeInsets.only(left: 30.0, right: 30.0, top: 80.0),
       child: new RaisedButton(
-        color: Colors.blue,
+        color:Colors.blue[300],
         textColor: Colors.white,
         disabledColor: Colors.blue[100],
         disabledTextColor: Colors.white,
         onPressed: (_phoneNum.isEmpty || _verifyCode.isEmpty)
             ? null
             : () {
-               print("登录");
+                Navigator.pushNamed(context, '/b');
               },
         child: new Text(
           "登  录",
@@ -194,8 +187,11 @@ child: new Material(
 
   @override
   Widget build(BuildContext context) {
-    theme = Theme.of(context);
+    
     return new MaterialApp(
+    theme: new ThemeData(
+      primaryColor: Constants.color_blue
+    ),
         home: new Scaffold(
       body: _buildBody(),
     ));
